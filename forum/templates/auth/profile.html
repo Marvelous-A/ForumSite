@@ -1,0 +1,22 @@
+{% extends "card/base.html" %}
+
+{% block content %}
+    <div id='profile_title'>
+        <h1>Профиль пользователя</h1>
+    </div>
+    <div id='profile_data'>
+        {% if user.is_superuser == True %}
+            <p>Пользователь является "админом"</p>
+        {% else %}
+            <p>Вы обычный пользователь</p>
+        {% endif %}
+        <p>Имя пользователя - {{user.username}}</p>
+        <p>Имя - {{user.first_name}}</p>
+        <p>Фамилия - {{user.last_name}}</p>
+        <p>Email - {{user.email}}</p>
+        <p>Номер телефона - {{user.profile.phone_number}}</p>
+        <p>Возраст - {{user.profile.birth_date}}</p>
+        <p>Город - {{user.profile.city}}</p>
+    </div>
+    {% comment %} <a id='button_update_profile' href="{% url 'update_profile'%}">Изменить парамерты пользователя</a> {% endcomment %}
+{% endblock %}

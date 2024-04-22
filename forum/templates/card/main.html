@@ -1,0 +1,15 @@
+{% extends "card/base.html" %}
+
+{% block content %}
+    <p>{{topics_result}}</p>
+    <div class='conteiner'>
+        {% for topic in topics %}
+            <a class='topic_card' href="{% url 'topic_detail' pk=topic.pk %}">
+                <div>
+                    <img class='image' src={{ topic.image }} alt='фото'\>
+                    <p>{{topic.title}}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

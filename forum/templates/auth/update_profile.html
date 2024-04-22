@@ -1,0 +1,41 @@
+{% extends "card/base.html" %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class='inputs_parameters_move'>
+            <div class='parameters_move'>
+                <h4>Введите новый номер телефона</h4>
+                <input id='phone_valid' class='input' value="{{request.user.profile.phone_number}}" type="text" name="phone_number">
+                <p id='phone_error' hidden >Данные введены не корректно!</p>
+            </div>
+            <div class='parameters_move'>
+                <h4>Введите новый Email</h4>
+                <input id='email_valid' class='input' value="{{request.user.email}}" type="text" name="email">
+                <p id='email_error' hidden >Данные введены не корректно!</p>            
+            </div>
+            <div class='parameters_move'>
+                <h4>Введите свой  новый город</h4>
+                <input id='city_valid' class='input' value="{{request.user.profile.city}}" type="text" name="city">
+                <p id='city_error' hidden >Данные введены не корректно!</p>            
+            </div>
+            <div class='parameters_move'>
+                <h4>Имя пользователя</h4>
+                <input id='username' class='input' value="{{request.user.username}}" type="text" name="username">
+            </div>
+            <div class='parameters_move'>
+                <h4>Введите своё имя</h4>
+                <input id='first_name' class='input' value="{{request.user.first_name}}" type="text" name="first_name">
+                <p id='first_name' hidden >Данные введены не корректно!</p>            
+            </div>
+            <div class='parameters_move'>
+                <h4>Введите свою фамилию</h4>
+                <input id='last_name' class='input' value="{{request.user.last_name}}" type="text" name="last_name">
+                <p id='last_name' hidden >Данные введены не корректно!</p>            
+            </div>
+        </div>
+        <button type='submit'> 
+            <p>Сохранить</p>
+        </button>
+    </form>
+{% endblock %}

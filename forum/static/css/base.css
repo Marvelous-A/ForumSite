@@ -1,0 +1,108 @@
+body {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #fcfcce;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Jost', sans-serif;
+}
+#header {
+    height: 10%;
+    background-color: #114232;
+    color: #FFC470;
+    z-index: 1000;
+    box-shadow: 0px 0px 5px black;
+}
+#header h1 {
+    margin-left: 3%;
+}
+#a_div {
+    background-color: #87A922;
+    padding: 0.7%;
+    text-align: center;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.a_base {
+    text-decoration: none;
+    color: #114232;
+    background-color: #AFD198;
+    /* padding: 4px; */
+    transition-duration: 0.5s;
+    transition-property: all;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px;
+}
+
+.conteiner {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap; /*чтобы переносить элементы на другую строчку*/
+    /* align-items: center; */
+    justify-content: center; /*Начало строки flex-start*/
+}
+.topic_card {
+    height: 28%;
+    width: 23%;
+    border-radius: 16px;
+    margin-top: 1%;
+    margin-left: 1%;
+    background-color: #087752;
+    /* box-shadow: 10px 10px 20px black; */
+    color: white;
+    text-transform: capitalize;
+    text-decoration: none;
+    /* cursor: pointer; */
+    text-align: center;
+    display: inline-block;
+    transition-duration: 0.3s;
+    transition-property: all;
+}
+.image { /*1920x1080*/
+    height: 216px;
+    width: 384px;
+    border-radius: 16px;
+    margin-top: 3%;
+}
+
+#footer {
+    padding: 0.5%;
+    margin-top: auto;
+    background-color: #114232;
+    color: #FFC470;
+}
+
+#topic_head {
+    width: 40%;
+    text-align: center;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+#title_discription {
+    text-align: left;
+}
+#window {
+    height: 45%;
+    width: 20%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    padding: 1%;
+    border-radius: 16px;
+    background-color:#087752;
+    overflow-y: scroll;
+}
+#window::-webkit-scrollbar {
+    height: 45%;
+    width: 20%;
+}
+
+#footer a {
+    color: #FFC470;
+}
