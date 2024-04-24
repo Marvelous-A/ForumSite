@@ -31,11 +31,18 @@ def topic_detail(request, pk):
     views.save()
     if request.method == 'POST':
         # message = Message(author=request.user, text=request.POST.get('text_message'), topic=topic)
+<<<<<<< HEAD
         # message_form = MessageForm(author=request.user, 
         #                            text=request.POST.get('text_message'), 
         #                            image=request.FILES,
         #                            topic=topic)
         message_form = MessageForm(data=request.POST, files=request.FILES)
+=======
+        data = request.POST.copy()
+        data['topic'] = topic
+        data['author'] = request.user
+        message_form = MessageForm(data=data, files=request.FILES)
+>>>>>>> 41c16a4115393dcb27698903e1969797ad487a50
         if message_form.is_valid():
             # Если форма валидна, создаем сообщение вручную
             message = message_form.save(commit=False)
@@ -44,8 +51,10 @@ def topic_detail(request, pk):
             message.save()
             redirect('topic_detail', pk)
         else:
-            print(message_form.error_messages)
-    return render(request, 'card/topic_detail.html', {'topic':topic})
+            print(message_form.errors)
+    else: 
+        message_form = MessageForm()
+    return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form})
 
 #Регистрация
 def login_view(request):
