@@ -6,29 +6,19 @@
         <p id='title_discription'>{{topic.discription}}</p>
     </div>
     <div id="window"></div>
-    <div id='text_bar'>
-        <input id='text' type='text'>
-        <button id='text_button', type='submit'>Отправить</button>
-    </div>
     
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div>
-            <label for="{{ form.title.id_for_label }}">Название:</label>
-            {{ form.title }}
-            {% if form.title.errors %}
-                <div class="error">{{ form.title.errors.as_text }}</div>
-            {% endif %}
-        </div>
-        <div>
-            <label for="{{ form.image.id_for_label }}">Изображение:</label>
-            {{ form.image }}
-            {% if form.image.errors %}
-                <div class="error">{{ form.image.errors.as_text }}</div>
-            {% endif %}
-        </div>
-        <div>
-            <button type="submit">Загрузить</button>
-        </div>
-    </form>
+    <div id='text_bar'>
+        <form method='POST'>
+            {% csrf_token %}
+            <input id='text' type='text' name='text_message'>
+            <div>
+                <label for="{{ form.image.id_for_label }}">Image:</label>
+                {{ form.image }}
+                {% if form.image.errors %}
+                <div class="error">{{ form.image.errors }}</div>
+                {% endif %}
+            </div>
+            <button id='text_button', type='submit'>Отправить</button>
+        </form>
+    </div>
 {% endblock %}

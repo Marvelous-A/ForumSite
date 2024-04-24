@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate, logout
-from .forms import ProfileForm, UserForm
+from .forms import *
 from .models import *
 
 # Create your views here.
@@ -29,6 +29,16 @@ def topic_detail(request, pk):
     topic = get_object_or_404(Topic, pk=pk)
     views = Views(user=request.user, topic=get_object_or_404(Topic, pk=pk))
     views.save()
+    if request.method == 'POST':
+        # message = Message(author=request.user, text=request.POST.get('text_message'), topic=topic)
+        message_form = MessageForm(author=request.user, 
+                                   text=request.POST.get('text_message'), 
+                                   image=request.FILES,
+                                   topic=topic)
+        if message_form.is_valid():
+            message_form.save()
+        else:
+            print(message_form.error_messages)
     return render(request, 'card/topic_detail.html', {'topic':topic})
 
 #Регистрация
@@ -69,7 +79,7 @@ def registration(request):
             login(request, user)
             return redirect('main')
         else:
-            print(user_form.error_messages, "qqqqqqq")
+            print(user_form.error_messages)
     else:
         user_form = UserForm()
         profile_form = ProfileForm()
