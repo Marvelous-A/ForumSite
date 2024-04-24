@@ -31,15 +31,17 @@ def topic_detail(request, pk):
     views.save()
     if request.method == 'POST':
         # message = Message(author=request.user, text=request.POST.get('text_message'), topic=topic)
-        message_form = MessageForm(author=request.user, 
-                                   text=request.POST.get('text_message'), 
-                                   image=request.FILES,
-                                   topic=topic)
+        data = request.POST.copy()
+        data['topic'] = topic
+        data['author'] = request.user
+        message_form = MessageForm(data=data, files=request.FILES)
         if message_form.is_valid():
             message_form.save()
         else:
-            print(message_form.error_messages)
-    return render(request, 'card/topic_detail.html', {'topic':topic})
+            print(message_form.errors)
+    else: 
+        message_form = MessageForm()
+    return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form})
 
 #Регистрация
 def login_view(request):
