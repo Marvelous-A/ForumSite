@@ -31,12 +31,18 @@ def topic_detail(request, pk):
     views.save()
     if request.method == 'POST':
         # message = Message(author=request.user, text=request.POST.get('text_message'), topic=topic)
-        message_form = MessageForm(author=request.user, 
-                                   text=request.POST.get('text_message'), 
-                                   image=request.FILES,
-                                   topic=topic)
+        # message_form = MessageForm(author=request.user, 
+        #                            text=request.POST.get('text_message'), 
+        #                            image=request.FILES,
+        #                            topic=topic)
+        message_form = MessageForm(data=request.POST, files=request.FILES)
         if message_form.is_valid():
-            message_form.save()
+            # Если форма валидна, создаем сообщение вручную
+            message = message_form.save(commit=False)
+            message.author = request.user
+            message.topic = topic
+            message.save()
+            redirect('topic_detail', pk)
         else:
             print(message_form.error_messages)
     return render(request, 'card/topic_detail.html', {'topic':topic})
