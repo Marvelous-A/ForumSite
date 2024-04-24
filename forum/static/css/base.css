@@ -47,8 +47,10 @@ body {
     justify-content: center; /*Начало строки flex-start*/
 }
 .topic_card {
-    height: 28%;
-    width: 23%;
+    /* height: 28%;
+    width: 23%; */
+    height: clamp(276.828px, 8vw ,396.828px);
+    width: clamp(425.719px, 5vw ,525.719px);
     border-radius: 16px;
     margin-top: 1%;
     margin-left: 1%;
@@ -68,13 +70,6 @@ body {
     width: 384px;
     border-radius: 16px;
     margin-top: 3%;
-}
-
-#footer {
-    padding: 0.5%;
-    margin-top: auto;
-    background-color: #114232;
-    color: #FFC470;
 }
 
 #topic_head {
@@ -102,7 +97,19 @@ body {
     height: 45%;
     width: 20%;
 }
+#text_bar {
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    align-items: center;
+}
 
 #footer a {
+    color: #FFC470;
+}
+#footer {
+    padding: 0.5%;
+    margin-top: auto;
+    background-color: #114232;
     color: #FFC470;
 }

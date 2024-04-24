@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.12"
 django = "^5.0.4"
 django-debug-toolbar = "^4.3.0"
+pillow = "^10.3.0"
 
 
 [build-system]

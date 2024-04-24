@@ -32,8 +32,9 @@ def save_user_profile(sender, instance, **kawrgs):
 class Message(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=500)
-    time = models.DateTimeField()
-    image = models.URLField()
+    time = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='messages/')
+    topic = models.ForeignKey('Topic', on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
