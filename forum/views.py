@@ -34,13 +34,16 @@ def topic_detail(request, pk):
     views.save()
     if request.method == 'POST':
         # message = Message(author=request.user, text=request.POST.get('text_message'), topic=topic)
-        data = request.POST.copy()
-        data['topic'] = topic
-        data['author'] = request.user
-        message_form = MessageForm(data=data, files=request.FILES)
+        # data = request.POST.copy()
+        # data['topic'] = topic
+        # data['author'] = request.user
+        # request.POST.update({'topic': topic, 'author': request.user})
+        message_form = MessageForm(data=request.POST, files=request.FILES)
         if message_form.is_valid():
-            # Если форма валидна, создаем сообщение вручную
-            message_form.save()
+            message = message_form.save(commit=False)
+            message.author = request.user  # Автоматически устанавливаем автора
+            message.topic = topic         # и тему
+            message.save()
             redirect('topic_detail', pk)
         else:
             print(message_form.errors)

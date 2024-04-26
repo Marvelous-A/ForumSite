@@ -15,15 +15,11 @@
         {% endfor %}
     </div>
     <div id='text_bar'>
-        <form method='POST'>
+        <form method='POST' enctype="multipart/form-data">
             {% csrf_token %}
             <input id='text' type='text' name='text'>
             <div>
-                <label for="{{ form.image.id_for_label }}">Image:</label>
                 {{ form.image }}
-                {% if form.image.errors %}
-                <div class="error">{{ form.image.errors }}</div>
-                {% endif %}
             </div>
             <button id='text_button', type='submit'>Отправить</button>
         </form>
