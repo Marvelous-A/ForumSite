@@ -26,35 +26,27 @@ def main(request):
     return render(request, 'card/main.html', {'topics': topics_result, 'views': views})
 
 def topic_detail(request, pk):
+    user = request.user
+    print(user)
     topic = get_object_or_404(Topic, pk=pk)
+    messages = Message.objects.filter(topic=topic)
     views = Views(user=request.user, topic=get_object_or_404(Topic, pk=pk))
     views.save()
     if request.method == 'POST':
         # message = Message(author=request.user, text=request.POST.get('text_message'), topic=topic)
-<<<<<<< HEAD
-        # message_form = MessageForm(author=request.user, 
-        #                            text=request.POST.get('text_message'), 
-        #                            image=request.FILES,
-        #                            topic=topic)
-        message_form = MessageForm(data=request.POST, files=request.FILES)
-=======
         data = request.POST.copy()
         data['topic'] = topic
         data['author'] = request.user
         message_form = MessageForm(data=data, files=request.FILES)
->>>>>>> 41c16a4115393dcb27698903e1969797ad487a50
         if message_form.is_valid():
             # Если форма валидна, создаем сообщение вручную
-            message = message_form.save(commit=False)
-            message.author = request.user
-            message.topic = topic
-            message.save()
+            message_form.save()
             redirect('topic_detail', pk)
         else:
             print(message_form.errors)
     else: 
         message_form = MessageForm()
-    return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form})
+    return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form, 'messages': messages})
 
 #Регистрация
 def login_view(request):

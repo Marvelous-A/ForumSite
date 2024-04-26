@@ -83,8 +83,8 @@ body {
     text-align: left;
 }
 #window {
-    height: 45%;
-    width: 20%;
+    height: 55%;
+    width: 90%;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -96,6 +96,23 @@ body {
 #window::-webkit-scrollbar {
     height: 45%;
     width: 20%;
+}
+.message{
+    width: 20%;
+    padding: 3px 8px;
+    border: 2px solid #000000;
+}
+#text_message_author-user {
+    margin-left: auto; 
+    margin-right: 0;
+    background-color: #31d810;
+    border-radius: 16px 16px 0px 16px;
+}
+#text_message_author-users {
+    margin-right: auto; 
+    margin-left: 0;
+    border-radius: 16px 16px 16px 0px;
+    background-color: rgb(209, 209, 209);
 }
 #text_bar {
     left: 0;

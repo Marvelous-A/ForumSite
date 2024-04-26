@@ -33,14 +33,14 @@ class Message(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=500)
     time = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='messages/', null=True)
+    image = models.ImageField(upload_to='messages/', default=None, null=True, blank=True)
     topic = models.ForeignKey('Topic', on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'Profile: {self.author}'
+        return f'Profile: {self.author} | {self.topic} | {self.text}'
 
 class Topic(models.Model):
     title = models.CharField(max_length=50)

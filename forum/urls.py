@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 #TODO: если пользователь не авторизован, то при любой попытке зайти на любую другую страницу сайта должно перекидывать на login форму
 urlpatterns = [
@@ -13,4 +15,4 @@ urlpatterns = [
     path('profile', views.profile, name='profile'),
     path('registration', views.registration, name='registration'),
     # path('update_profile', views.update_profile, name='update_profile'),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

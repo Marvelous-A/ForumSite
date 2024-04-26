@@ -5,12 +5,19 @@
         <h3 id='title_topic'>{{topic.title}}</h3>
         <p id='title_discription'>{{topic.discription}}</p>
     </div>
-    <div id="window"></div>
-    
+    <div id="window">
+        {% for message in messages %}
+            {% if message.author == user %}
+                <p><div class='message' id='text_message_author-user'><h3>{{message.text}}</h3><p>{{message.time|date:"H:i"}}</p></div></p>
+            {% else %}
+                <p><div class='message' id='text_message_author-users'><p id='message_users'>{{message.author}}</p><h3>{{message.text}}</h3><p>{{message.time|date:"H:i"}}</p></div></p>
+            {% endif %}
+        {% endfor %}
+    </div>
     <div id='text_bar'>
         <form method='POST'>
             {% csrf_token %}
-            <input id='text' type='text' name='text_message'>
+            <input id='text' type='text' name='text'>
             <div>
                 <label for="{{ form.image.id_for_label }}">Image:</label>
                 {{ form.image }}
