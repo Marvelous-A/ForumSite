@@ -40,6 +40,7 @@ def topic_detail(request, pk):
         message_form = MessageForm(data=data, files=request.FILES)
         if message_form.is_valid():
             # Если форма валидна, создаем сообщение вручную
+            print(data['image'])
             message_form.save()
             redirect('topic_detail', pk)
         else:
