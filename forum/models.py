@@ -18,7 +18,7 @@ class Profile(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'Profile: {self.user.username}'
+        return f'{self.user.username}'
     
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
