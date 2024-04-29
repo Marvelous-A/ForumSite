@@ -4,16 +4,16 @@
     <div id='topic_head'>
         <h3 id='title_topic'>{{topic.title}}</h3>
         <p id='title_discription'>{{topic.discription}}</p>
-        <img class='image' src='http://127.0.0.1:8000/media/messages/opera_5zJA5998SS.png' alt='foto_user'>
+        <img class='image' src='/media/messages/opera_5zJA5998SS.png' alt='foto_user'>
     </div>
     <div id="window">
         {% for message in messages %}
             {% if message.author == user %}
                 <p><div class='message' id='text_message_author-user'><h3>{{message.text}}</h3><p>{{message.time|date:"H:i"}}</p></div></p>
-                <img class='image' src={{message.image}} alt='foto_author'\><p>{{message.image}}</p>
+                <img class='image' src={{message.image.url}} alt='foto_author'\><p>{{message.image}}</p>
             {% else %}
                 <p><div class='message' id='text_message_author-users'><p id='message_users'>{{message.author}}</p><h3>{{message.text}}</h3><p>{{message.time|date:"H:i"}}</p></div></p>
-                <img class='image' src='media/messages/opera_qrb6OdEPWU_9dVPwGf.png' alt='foto_users'\><p>{{message.image}}</p>
+                <img class='image' src={{message.image.url}} alt='foto_users'\><p>{{message.image}}</p>
             {% endif %}
         {% endfor %}
     </div>

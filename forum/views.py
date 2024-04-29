@@ -33,11 +33,6 @@ def topic_detail(request, pk):
     views = Views(user=request.user, topic=get_object_or_404(Topic, pk=pk))
     views.save()
     if request.method == 'POST':
-        # message = Message(author=request.user, text=request.POST.get('text_message'), topic=topic)
-        # data = request.POST.copy()
-        # data['topic'] = topic
-        # data['author'] = request.user
-        # request.POST.update({'topic': topic, 'author': request.user})
         message_form = MessageForm(data=request.POST, files=request.FILES)
         if message_form.is_valid():
             message = message_form.save(commit=False)
@@ -68,7 +63,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return render(request, 'card/main.html', {})
+    return render(request, 'home.html', {})
 
 def profile(request):
     return render(request, 'auth/profile.html', {})
