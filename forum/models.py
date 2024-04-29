@@ -25,9 +25,9 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kawrgs):
-    instance.profile.save()
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kawrgs):
+#     instance.profile.save()
 
 class Message(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)

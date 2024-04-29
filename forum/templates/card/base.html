@@ -19,21 +19,21 @@
         <a class='a_base' id='registration' href="{% url 'registration' %}" >Регистрация</a>
     </div> {% endcomment %}
     {% if user.is_authenticated %}
-            <div id='a_div'>
-                {% if user.is_superuser %}
-                    <a class='a_base' id='admin' href="/admin">Admin</a>
-                {% endif %}
-                <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a>
-                <a class='a_base' href="{% url 'profile' %}" >Профиль</a>
-                <a class='a_base' id='logout' href="{% url 'logout' %}">Выход</a>
-            </div>
-        {% else %}
-            <div id='a_div'>
-                <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a>
-                <a class='a_base' id='login' href="{% url 'login' %}">Вход</a>
-                <a class='a_base' href="{% url 'registration'%}">Регистрация</a>
-            </div>
-        {% endif %}
+        <div id='a_div'>
+            {% if user.is_superuser %}
+                <a class='a_base' id='admin' href="/admin">Admin</a>
+            {% endif %}
+            <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a>
+            <a class='a_base' href="{% url 'profile' %}" >Профиль</a>
+            <a class='a_base' id='logout' href="{% url 'logout' %}">Выход</a>
+        </div>
+    {% else %}
+        <div id='a_div'>
+            <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a>
+            <a class='a_base' id='login' href="{% url 'login' %}">Вход</a>
+            <a class='a_base' href="{% url 'registration'%}">Регистрация</a>
+        </div>
+    {% endif %}
     {% block content %}
     {% endblock %}
     <br><br><br>
