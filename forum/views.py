@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from .forms import *
 from .models import *
 
 # Create your views here.
+@login_required(login_url='login')
 def main(request):
     topics = Topic.objects.all()
     views = Views.objects.all()
@@ -24,7 +26,15 @@ def main(request):
     topics_result = sorted(topics_result, key=lambda x: x[1], reverse=True)
     topics_result = [i[0] for i in topics_result]
     return render(request, 'card/main.html', {'topics': topics_result, 'views': views})
+    # chapters = Chapter.objects.all()
+    # return render(request, 'card/main.html', {'chapters': chapters})
 
+@login_required(login_url='login')
+def chapter_detail(request, pk):
+    chapter = get_object_or_404(Chapter, pk=pk)
+    return render(request, 'card/chapter_detail.html', {'chapter': chapter})
+
+@login_required(login_url='login')
 def topic_detail(request, pk):
     user = request.user
     print(user)
@@ -59,11 +69,11 @@ def login_view(request):
             # Возвращение сообщения об ошибке
             return render(request, 'auth/login.html', {'error': 'Неверное имя пользователя или пароль'})
     else:
-        return render(request, 'auth/login.html')
+        return render(request, 'auth/login.html', {})
 
 def logout_view(request):
     logout(request)
-    return render(request, 'home.html', {})
+    return render(request, 'auth/login.html', {})
 
 def profile(request):
     return render(request, 'auth/profile.html', {})

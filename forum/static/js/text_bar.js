@@ -10,3 +10,15 @@ text_button.onclick = function(){
         text_bar.ap(div);
     }
 };
+
+// image
+let images = document.querySelectorAll('#window img');
+
+images.forEach(image => image.onclick = function(){
+    console.log(image.src);
+    if (image.hasAttribute('style')){
+        image.removeAttribute('style');
+    }else{
+        image.setAttribute('style', 'width: 1000px;');
+    }
+});

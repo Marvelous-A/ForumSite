@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.main, name='main'),
     path('topic_detail/<int:pk>', views.topic_detail, name='topic_detail'),
+    path('chapter_detail/<int:pk>', views.chapter_detail, name='chapter_detail'),
 
     #Регистрация
     path('login', views.login_view, name='login'),

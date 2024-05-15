@@ -25,10 +25,6 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-# @receiver(post_save, sender=User)
-# def save_user_profile(sender, instance, **kawrgs):
-#     instance.profile.save()
-
 class Message(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     text = models.CharField(max_length=500)
@@ -41,6 +37,18 @@ class Message(models.Model):
 
     def __str__(self):
         return f'Profile: {self.author} | {self.topic} | {self.text}'
+
+class Chapter(models.Model):
+    title = models.CharField(max_length=50)
+    icon_img = models.ImageField(default=False)
+    discription = models.CharField(max_length=500)
+    topics = models.ManyToManyField('Topic')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.title}'
 
 class Topic(models.Model):
     title = models.CharField(max_length=50)
