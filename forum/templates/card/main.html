@@ -1,18 +1,12 @@
 {% extends "card/base.html" %}
 
 {% block content %}
-    {% comment %} {%for chapter in chapters%}
-        <a href="{% url 'chapter_detail' pk=chapter.pk %}">{{chapter.title}}</a>
-        <img src={{ chapter.icon_img }} alt='icon'\>
-    {% endfor %} {% endcomment %}
     <div class='conteiner'>
-        {% for topic in topics %}
-            <a class='topic_card' href="{% url 'topic_detail' pk=topic.pk %}">
-                <div>
-                    <img class='image_topic_view' src={{ topic.image }} alt='фото'\>
-                    <p>{{topic.title}}</p>
-                </div>
-            </a>
+        {%for chapter in chapters%}
+            <div class='chapter'>
+                <a href="{% url 'chapter_detail' pk=chapter.pk %}">{{chapter.title}}</a>
+                <img class='chapter_icon' src={{ chapter.icon_img.url }} alt='icon'\>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

@@ -2,7 +2,6 @@
 
 {% block content %}
     <div class='conteiner'>
-        <p>{{chapter.topics}}</p>
         {% for topic in topics %}
             <a class='topic_card' href="{% url 'topic_detail' pk=topic.pk %}">
                 <div>

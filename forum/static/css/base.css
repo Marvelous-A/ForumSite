@@ -14,7 +14,11 @@ body {
     z-index: 1000;
     box-shadow: 0px 0px 5px black;
 }
-#header h1 {
+#header a {
+    text-decoration: none;
+}
+#header a h1 {
+    color: #FFC470;
     margin-left: 3%;
 }
 #a_div {
@@ -97,6 +101,32 @@ body {
 #window::-webkit-scrollbar {
     height: 45%;
     width: 20%;
+}
+
+.chapter {
+    width: 22%;
+    margin-left: 1%;
+    margin-top: 1%;
+}
+.chapter a {
+    font-size: 30px;
+    text-decoration: none;
+    color: black;
+    position: relative;
+    bottom: 12px;
+    margin-right: 1%;
+}
+.chapter_icon {
+    width: 40px;
+}
+
+.questions {
+    height: 20px;
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    margin-top: 2%;
+    margin-left: 1%;
 }
 
 /*user*/

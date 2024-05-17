@@ -9,7 +9,7 @@
 </head>
 <body>
     <header id='header'>
-        <h1>forum</h1>
+        <a id='main' href="{% url 'main' %}" ><h1>forum</h1></a>
     </header>
     {% comment %} <div id='a_div'>
         <a class='a_base' id='admin' href="/admin">Admin</a>
@@ -23,13 +23,13 @@
             {% if user.is_superuser %}
                 <a class='a_base' id='admin' href="/admin">Admin</a>
             {% endif %}
-            <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a>
+            {% comment %} <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a> {% endcomment %}
             <a class='a_base' href="{% url 'profile' %}" >Профиль</a>
             <a class='a_base' id='logout' href="{% url 'logout' %}">Выход</a>
         </div>
     {% else %}
         <div id='a_div'>
-            <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a>
+            {% comment %} <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a> {% endcomment %}
             <a class='a_base' id='login' href="{% url 'login' %}">Вход</a>
             <a class='a_base' href="{% url 'registration'%}">Регистрация</a>
         </div>

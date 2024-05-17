@@ -1,0 +1,63 @@
+{% extends "card/base.html" %}
+
+{% block content %}
+    <div id='topic_head'>
+        <h3 id='title_topic'>{{question.text_question}}</h3>
+        {% comment %} <p id='title_discription'>{{question.discription}}</p> {% endcomment %}
+    </div>
+    <div id="window">
+        {% for message in messages %}
+            {% if message.author == user %}
+                {% if message.image %}
+                    <p>
+                        <div class='text_message_user'>
+                            <img style="" class='image_message_user' src={{message.image.url}} alt='foto_author'\>
+                            <h3>{{message.text}}</h3>
+                            <p>{{message.time|date:"H:i"}}</p>
+                            {% comment %} <a href="{% url 'delete_message' pk_mess=message.pk pk_ques=question.pk%}">удалить</a> {% endcomment %}
+                        </div>
+                    </p>
+                {% else %}
+                    <p>
+                        <div class='text_message_user'>
+                            <h3>{{message.text}}</h3>
+                            <p>{{message.time|date:"H:i"}}</p>
+                            {% comment %} <a href="{% url 'delete_message' pk_mess=message.pk pk_ques=question.pk%}">удалить</a> {% endcomment %}
+                        </div>
+                    </p>
+                {% endif %}
+            {% else %}
+                {% if message.image %}
+                    <p>
+                        <div class='text_message_interlocutor'>
+                            <img class='image_message_interlocutor' src={{message.image.url}} alt='foto_users'\>
+                            <p>{{message.author}}</p>
+                            <h3>{{message.text}}</h3><p>{{message.time|date:"H:i"}}</p>
+                        </div>
+                    </p>
+                {% else %}
+                    <p>
+                        <div class='text_message_interlocutor'>
+                            <p>{{message.author}}</p>
+                            <h3>{{message.text}}</h3><p>{{message.time|date:"H:i"}}</p>
+                        </div>
+                    </p>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div id='text_bar'>
+        <form method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+            <input id='input_text' type='text' name='text'>
+            <div id='input_image'>
+                {% comment %} {{ form.image }} {% endcomment %}
+                <input type="file" name="image" accept="image/*" id="id_image">
+            </div>
+            <button id='text_button', type='submit'>
+                {% comment %} <img id='text_button_image' src="/static/image_for_site/send_icon_184075.png" alt='foto'> {% endcomment %}
+                <img id='text_button_image' src="/media/for_site/send_icon_184075.png" alt='foto'>
+            </button>
+        </form>
+    </div>
+{% endblock %}

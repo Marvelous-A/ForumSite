@@ -15,4 +15,4 @@ class ProfileForm(forms.ModelForm):
 class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ('author', 'text', 'image', 'topic')
+        fields = ('author', 'text', 'image', 'question')

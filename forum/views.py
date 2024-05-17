@@ -13,7 +13,7 @@ def main(request):
     for topic in topics:
         arr.append(topic)
     for view in views:
-        arr.append(view.topic)
+        arr.append(view.question)
     # Создание словаря для подсчета повторений элементов
     counts = {}
     for item in arr:
@@ -25,36 +25,52 @@ def main(request):
     topics_result = [[key, value] for key, value in counts.items()]
     topics_result = sorted(topics_result, key=lambda x: x[1], reverse=True)
     topics_result = [i[0] for i in topics_result]
-    return render(request, 'card/main.html', {'topics': topics_result, 'views': views})
-    # chapters = Chapter.objects.all()
-    # return render(request, 'card/main.html', {'chapters': chapters})
+    # return render(request, 'card/main.html', {'topics': topics_result, 'views': views})
+    chapters = Chapter.objects.all()
+    return render(request, 'card/main.html', {'chapters': chapters})
 
 @login_required(login_url='login')
 def chapter_detail(request, pk):
     chapter = get_object_or_404(Chapter, pk=pk)
-    return render(request, 'card/chapter_detail.html', {'chapter': chapter})
+    topics = Topic.objects.filter(chapter=chapter)
+    return render(request, 'card/chapter_detail.html', {'topics': topics})
 
 @login_required(login_url='login')
 def topic_detail(request, pk):
-    user = request.user
-    print(user)
     topic = get_object_or_404(Topic, pk=pk)
-    messages = Message.objects.filter(topic=topic)
-    views = Views(user=request.user, topic=get_object_or_404(Topic, pk=pk))
+    questions = Question.objects.filter(topic=topic)
+    return render(request, 'card/topic_detail.html', {'questions': questions})
+    # return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form, 'messages': messages})
+
+@login_required(login_url='login')
+def question_detail(request, pk):
+    user = request.user
+    # topic = get_object_or_404(Topic, pk=pk)
+    question = get_object_or_404(Question, pk=pk)
+    messages = Message.objects.filter(question=question)
+    views = Views(user=request.user, question=get_object_or_404(Question, pk=pk))
     views.save()
     if request.method == 'POST':
         message_form = MessageForm(data=request.POST, files=request.FILES)
         if message_form.is_valid():
             message = message_form.save(commit=False)
             message.author = request.user  # Автоматически устанавливаем автора
-            message.topic = topic         # и тему
+            message.question = question         # и тему
             message.save()
-            redirect('topic_detail', pk)
+            redirect('question_detail', pk)
         else:
             print(message_form.errors)
     else: 
         message_form = MessageForm()
-    return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form, 'messages': messages})
+    # return render(request, 'card/question_detail.html', {})
+    return render(request, 'card/question_detail.html', {'question':question, 'form': message_form, 'messages': messages})
+
+# def delete_message(request, pk_mess, pk_ques):
+#     message = get_object_or_404(Message, pk=pk_mess)
+#     # question = get_object_or_404(Question, pk=pk_ques)
+#     message.delete()
+#     # return redirect("{% url 'question_detail' pk=question.pk %}")
+#     return render(request, "{% url 'card/question_detail.html' pk=question.pk %}", {})
 
 #Регистрация
 def login_view(request):
