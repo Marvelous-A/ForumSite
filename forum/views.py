@@ -66,11 +66,11 @@ def question_detail(request, pk):
     return render(request, 'card/question_detail.html', {'question':question, 'form': message_form, 'messages': messages})
 
 # def delete_message(request, pk_mess, pk_ques):
-#     message = get_object_or_404(Message, pk=pk_mess)
-#     # question = get_object_or_404(Question, pk=pk_ques)
-#     message.delete()
-#     # return redirect("{% url 'question_detail' pk=question.pk %}")
-#     return render(request, "{% url 'card/question_detail.html' pk=question.pk %}", {})
+    # message = get_object_or_404(Message, pk=pk_mess)
+    # question = get_object_or_404(Question, pk=pk_ques)
+    # message.delete()
+    # return redirect("{% url 'question_detail' pk=question.pk %}")
+    # return render(request, "{% url 'card/question_detail.html' pk=question.pk %}", {})
 
 #Регистрация
 def login_view(request):

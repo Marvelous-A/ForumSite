@@ -139,3 +139,22 @@ LOGIN_URL = '/'
 
 MEDIA_ROOT = f'{BASE_DIR}/media'
 MEDIA_URL = '/media/'
+
+
+# АСИНХРОННОСТЬ
+INSTALLED_APPS = [
+    # другие приложения
+    'channels',
+]
+
+ASGI_APPLICATION = 'your_project.asgi.application'
+
+# Конфигурация Channels
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

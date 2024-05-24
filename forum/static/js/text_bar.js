@@ -11,6 +11,22 @@ text_button.onclick = function(){
     }
 };
 
+const questionSocket = new WebSocket(
+    'ws://' + window.location.host + '/ws/questions/'
+);
+
+questionSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    const questionElement = document.getElementById('question-' + data.id);
+    if (questionElement) {
+        questionElement.parentNode.removeChild(questionElement);
+    }
+};
+
+questionSocket.onclose = function(e) {
+    console.error('Question socket closed unexpectedly');
+};
+
 // image
 // let images = document.querySelectorAll('#window img');
 

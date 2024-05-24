@@ -10,6 +10,8 @@ python = "^3.11"
 django = "^5.0.4"
 django-debug-toolbar = "^4.3.0"
 pillow = "^10.3.0"
+channels = "^4.1.0"
+channels-redis = "^4.2.0"
 
 
 [build-system]
