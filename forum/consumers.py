@@ -32,6 +32,7 @@ class QuestionConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'id': message_id,
         }))
+        
     @database_sync_to_async
     async def delete_message(self, id):
         # Здесь логика удаления сообщения из базы данных

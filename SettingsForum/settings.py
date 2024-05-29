@@ -38,20 +38,19 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+    'forum',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'debug_toolbar', # <== *django-debug-toolbar adding
-    'forum'
+    'debug_toolbar' # <== *django-debug-toolbar adding
 ]
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware', # <== *django-debug-toolbar adding
-
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -141,20 +140,11 @@ MEDIA_ROOT = f'{BASE_DIR}/media'
 MEDIA_URL = '/media/'
 
 
-# АСИНХРОННОСТЬ
-INSTALLED_APPS = [
-    # другие приложения
-    'channels',
-]
-
-ASGI_APPLICATION = 'your_project.asgi.application'
+ASGI_APPLICATION = 'SettingsForum.asgi.application'
 
 # Конфигурация Channels
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
     },
 }
