@@ -34,7 +34,7 @@ class QuestionConsumer(AsyncWebsocketConsumer):
         }))
         
     @database_sync_to_async
-    async def delete_message(self, id):
+    def delete_message(self, id):
         # Здесь логика удаления сообщения из базы данных
         try: 
             Question.objects.get(pk=id).delete()

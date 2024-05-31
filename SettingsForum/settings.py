@@ -38,19 +38,23 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
-    'forum',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne',
     'django.contrib.staticfiles',
-    'debug_toolbar' # <== *django-debug-toolbar adding
+
+    'debug_toolbar',
+    
+    'channels',
+    'forum',
+    
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware', # <== *django-debug-toolbar adding
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -79,7 +83,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'SettingsForum.wsgi.application'
-
+ASGI_APPLICATION = 'SettingsForum.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -140,7 +144,7 @@ MEDIA_ROOT = f'{BASE_DIR}/media'
 MEDIA_URL = '/media/'
 
 
-ASGI_APPLICATION = 'SettingsForum.asgi.application'
+
 
 # Конфигурация Channels
 CHANNEL_LAYERS = {
