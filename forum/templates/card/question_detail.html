@@ -19,7 +19,7 @@
                     </p>
                 {% else %}
                     <p>
-                        <div class='text_message_user'>
+                        <div class='text_message_user' id="question-{{message.pk}}">
                             <h3>{{message.text}}</h3>
                             <p>{{message.time|date:"H:i"}}</p>
                             {% comment %} <a href="{% url 'delete_message' pk_mess=message.pk pk_ques=question.pk%}">удалить</a> {% endcomment %}
@@ -60,4 +60,27 @@
             </button>
         </form>
     </div>
+    <script>
+        var questionId = {{ question.id }}
+        var websocket = new WebSocket(`ws://${window.location.host}/ws/question/${questionId}/`)
+
+        websocket.onmessage = function(event){
+            var data = JSON.parse(event.data);
+            if (data.id){
+                var questionElement = document.getElementById("question-"+data.id);
+                if (questionElement) {
+                    questionElement.parentElement.removeChild(questionElement)
+                }
+            }
+        };
+
+        websocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+        
+        function sendDelete(id) {
+            websocket.send(JSON.stringify({'id': id}));
+        }
+
+    </script>
 {% endblock %}
