@@ -14,7 +14,8 @@
                             <img style="" class='image_message_user' src={{message.image.url}} alt='foto_author'\>
                             <h3>{{message.text}}</h3>
                             <p>{{message.time|date:"H:i"}}</p>
-                            {% comment %} <a href="{% url 'delete_message' pk_mess=message.pk pk_ques=question.pk%}">удалить</a> {% endcomment %}
+                            <button onclick="sendDelete({{message.pk}})">Удалить</button>
+
                         </div>
                     </p>
                 {% else %}
@@ -22,7 +23,7 @@
                         <div class='text_message_user' id="question-{{message.pk}}">
                             <h3>{{message.text}}</h3>
                             <p>{{message.time|date:"H:i"}}</p>
-                            {% comment %} <a href="{% url 'delete_message' pk_mess=message.pk pk_ques=question.pk%}">удалить</a> {% endcomment %}
+                            <button onclick="sendDelete({{message.pk}})">Удалить</button>
                         </div>
                     </p>
                 {% endif %}

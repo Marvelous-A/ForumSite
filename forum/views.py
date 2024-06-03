@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from .forms import *
 from .models import *
 
@@ -42,14 +43,15 @@ def topic_detail(request, pk):
     return render(request, 'card/topic_detail.html', {'questions': questions})
     # return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form, 'messages': messages})
 
+@never_cache
 @login_required(login_url='login')
 def question_detail(request, pk):
     user = request.user
     # topic = get_object_or_404(Topic, pk=pk)
     question = get_object_or_404(Question, pk=pk)
     messages = Message.objects.filter(question=question)
-    views = Views(user=request.user, question=get_object_or_404(Question, pk=pk))
-    views.save()
+    # views = Views(user=request.user, question=get_object_or_404(Question, pk=pk))
+    # views.save()
     if request.method == 'POST':
         message_form = MessageForm(data=request.POST, files=request.FILES)
         if message_form.is_valid():
@@ -57,7 +59,7 @@ def question_detail(request, pk):
             message.author = request.user  # Автоматически устанавливаем автора
             message.question = question         # и тему
             message.save()
-            redirect('question_detail', pk)
+            redirect('question_detail', pk=pk)
         else:
             print(message_form.errors)
     else: 
