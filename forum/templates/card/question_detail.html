@@ -10,7 +10,7 @@
             {% if message.author == user %}
                 {% if message.image %}
                     <p>
-                        <div class='text_message_user'>
+                        <div class='text_message_user' id="message-{{message.pk}}">
                             <img style="" class='image_message_user' src={{message.image.url}} alt='foto_author'\>
                             <h3>{{message.text}}</h3>
                             <p>{{message.time|date:"H:i"}}</p>
@@ -20,7 +20,7 @@
                     </p>
                 {% else %}
                     <p>
-                        <div class='text_message_user' id="question-{{message.pk}}">
+                        <div class='text_message_user' id="message-{{message.pk}}">
                             <h3>{{message.text}}</h3>
                             <p>{{message.time|date:"H:i"}}</p>
                             <button onclick="sendDelete({{message.pk}})">Удалить</button>
@@ -48,30 +48,35 @@
         {% endfor %}
     </div>
     <div id='text_bar'>
-        <form method='POST' enctype="multipart/form-data">
-            {% csrf_token %}
-            <input id='input_text' type='text' name='text'>
-            <div id='input_image'>
-                {% comment %} {{ form.image }} {% endcomment %}
-                <input type="file" name="image" accept="image/*" id="id_image">
-            </div>
-            <button id='text_button', type='submit'>
-                {% comment %} <img id='text_button_image' src="/static/image_for_site/send_icon_184075.png" alt='foto'> {% endcomment %}
-                <img id='text_button_image' src="/media/for_site/send_icon_184075.png" alt='foto'>
-            </button>
-        </form>
+       <input id="message_input" type="text" placeholder="Введите сообщение">
+       <input type="file" id="image_input" accept="image/*">
+       <button id='text_button' onclick="sendMessage()">Отправить</button>
     </div>
+
+
+    
     <script>
         var questionId = {{ question.id }}
         var websocket = new WebSocket(`ws://${window.location.host}/ws/question/${questionId}/`)
-
+        var messagesContainer = document.getElementById('window')
         websocket.onmessage = function(event){
             var data = JSON.parse(event.data);
-            if (data.id){
-                var questionElement = document.getElementById("question-"+data.id);
+            if (data.id && !data.message){
+                var questionElement = document.getElementById("message-"+data.id);
                 if (questionElement) {
                     questionElement.parentElement.removeChild(questionElement)
                 }
+            } else if (data.message) {
+                var messageDiv = document.createElement('div');
+                messageDiv.id = "message-" + data.id;
+                messageDiv.className = (data.author === "{{ user.username }}") ? 'text_message_user' : 'text_message_interlocutor';
+                var messageContent = `<p>${data.author} <span>${data.time|date:"H:i"}</span></p> <h3> ${data.message}</h3>`;
+                if (data.image_url){
+                    messageContent += `<img src="${data.image_url}" alt="Attached Image" style="max-width: 200px;">`
+                }
+                messageContent += `<button onclick="sendDelete(${data.id})">Удалить</button>`
+                messageDiv.innerHTML = messageContent;
+                messagesContainer.appendChild(messageDiv);
             }
         };
 
@@ -81,6 +86,32 @@
         
         function sendDelete(id) {
             websocket.send(JSON.stringify({'id': id}));
+        }
+
+        function sendMessage(){
+            const messageInput = document.getElementById('message_input');
+            const imageInput = document.getElementById('image_input');
+            const file = image.imageInput.files[0];
+            const message = messageInput.value;
+
+            if (file) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                websocket.send(JSON.stringify({
+                    'text': message,
+                    'image': reader.result
+                }));
+            };
+            reader.readAsDataURL(file);
+            } else {
+                ebsocket.send(JSON.stringify({
+                    'text': message,
+                    'image': null
+                }));
+            }
+
+            messageInput.value = '';
+            imageInput.value = '';
         }
 
     </script>

@@ -2,6 +2,8 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from channels.db import database_sync_to_async
 from .models import Message, User, Question
+from django.core.files.base import ContentFile
+import base64
 
 class QuestionConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -38,7 +40,9 @@ class QuestionConsumer(AsyncWebsocketConsumer):
         
         if 'text' in text_data_json:
             message_text = text_data_json['text']
-            message = self.create_message(message_text)
+            image_data = text_data_json.get('image')
+            message = self.create_message(message_text, image_data)
+    
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
@@ -73,14 +77,20 @@ class QuestionConsumer(AsyncWebsocketConsumer):
             message.delete()
         except Message.DoesNotExist:
             print("Сообщения не существует")
-    
-    def create_message(self, text):
+
+    @database_sync_to_async
+    def create_message(self, text, image_data=None):
         user = User.objects.get(username=self.scope["user"].username)
         question = Question.objects.get(pk=self.question_id)
-
-        message = Message.objects.create(
+        message = Message(
             author=user,
             question=question,
             text=text
             )
+        if image_data:
+            format, imgstr = image_data.split(';base64,')
+            ext = format.split('/')[-1]
+            image_file = ContentFile(base64.b64decode(imgstr), name=f'message_{message.pk}.{ext}')
+            message.image.save(f'message_image_{message.pk}.{ext}', image_file, save=False)
+        message.save()
         return message
