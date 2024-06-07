@@ -56,63 +56,66 @@
 
     
     <script>
-        var questionId = {{ question.id }}
-        var websocket = new WebSocket(`ws://${window.location.host}/ws/question/${questionId}/`)
-        var messagesContainer = document.getElementById('window')
-        websocket.onmessage = function(event){
+        var questionId = {{ question.id }};
+        var websocket = new WebSocket(`ws://${window.location.host}/ws/question/${questionId}/`);
+    
+        websocket.onmessage = function(event) {
             var data = JSON.parse(event.data);
-            if (data.id && !data.message){
-                var questionElement = document.getElementById("message-"+data.id);
-                if (questionElement) {
-                    questionElement.parentElement.removeChild(questionElement)
+            var messagesContainer = document.getElementById("window");
+    
+            if (data.id && !data.message) {
+                // Удаление сообщения
+                var messageElement = document.getElementById("message-" + data.id);
+                if (messageElement) {
+                    messageElement.remove();
                 }
             } else if (data.message) {
+                // Добавление нового сообщения
                 var messageDiv = document.createElement('div');
                 messageDiv.id = "message-" + data.id;
-                messageDiv.className = (data.author === "{{ user.username }}") ? 'text_message_user' : 'text_message_interlocutor';
-                var messageContent = `<p>${data.author} <span>${data.time|date:"H:i"}</span></p> <h3> ${data.message}</h3>`;
-                if (data.image_url){
-                    messageContent += `<img src="${data.image_url}" alt="Attached Image" style="max-width: 200px;">`
+                messageDiv.className = data.author === "{{ user.username }}" ? 'text_message_user' : 'text_message_interlocutor';
+                var messageContent = `<p><strong>${data.author}</strong> ${data.time}</p><h3>${data.message}</h3>`;
+                if (data.image_url) {
+                    messageContent += `<img src="${data.image_url}" alt="Image" style="max-width: 200px;">`;
                 }
-                messageContent += `<button onclick="sendDelete(${data.id})">Удалить</button>`
+                messageContent += `<button onclick="sendDelete(${data.id})">Удалить</button>`;
                 messageDiv.innerHTML = messageContent;
                 messagesContainer.appendChild(messageDiv);
             }
         };
-
-        websocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-        
-        function sendDelete(id) {
-            websocket.send(JSON.stringify({'id': id}));
-        }
-
-        function sendMessage(){
+    
+        function sendMessage() {
             const messageInput = document.getElementById('message_input');
             const imageInput = document.getElementById('image_input');
-            const file = image.imageInput.files[0];
+            const file = imageInput.files[0];
             const message = messageInput.value;
-
+    
             if (file) {
-            const reader = new FileReader();
-            reader.onload = function(){
-                websocket.send(JSON.stringify({
-                    'text': message,
-                    'image': reader.result
-                }));
-            };
-            reader.readAsDataURL(file);
+                const reader = new FileReader();
+                reader.onload = function() {
+                    websocket.send(JSON.stringify({
+                        'text': message,
+                        'image': reader.result
+                    }));
+                };
+                reader.readAsDataURL(file);
             } else {
-                ebsocket.send(JSON.stringify({
-                    'text': message,
-                    'image': null
+                websocket.send(JSON.stringify({
+                    'text': message
                 }));
             }
-
+    
             messageInput.value = '';
             imageInput.value = '';
         }
-
+    
+        function sendDelete(id) {
+            websocket.send(JSON.stringify({'id': id}));
+        }
+    
+        websocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
     </script>
+    
 {% endblock %}

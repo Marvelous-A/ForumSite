@@ -24,9 +24,9 @@ class QuestionConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message_id = text_data_json['id']
         
         if "id" in text_data_json:
+            message_id = text_data_json['id']
             # Удаление сообщения из базы данных
             await self.delete_message(message_id)
             # Отправка сообщения об удалении всем клиентам
@@ -41,7 +41,7 @@ class QuestionConsumer(AsyncWebsocketConsumer):
         if 'text' in text_data_json:
             message_text = text_data_json['text']
             image_data = text_data_json.get('image')
-            message = self.create_message(message_text, image_data)
+            message = await self.create_message(message_text, image_data)
     
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -87,10 +87,11 @@ class QuestionConsumer(AsyncWebsocketConsumer):
             question=question,
             text=text
             )
+        
+        message.save()
         if image_data:
             format, imgstr = image_data.split(';base64,')
             ext = format.split('/')[-1]
             image_file = ContentFile(base64.b64decode(imgstr), name=f'message_{message.pk}.{ext}')
-            message.image.save(f'message_image_{message.pk}.{ext}', image_file, save=False)
-        message.save()
+            message.image.save(f'message_image_{message.pk}.{ext}', image_file, save=True)
         return message
