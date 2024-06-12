@@ -39,8 +39,8 @@ def chapter_detail(request, pk):
 @login_required(login_url='login')
 def topic_detail(request, pk):
     topic = get_object_or_404(Topic, pk=pk)
-    questions = Question.objects.filter(topic=topic)
-    return render(request, 'card/topic_detail.html', {'questions': questions})
+    questions = Chat.objects.filter(topic=topic)
+    return render(request, 'card/topic_detail.html', {'questions': questions, 'topic': topic})
     # return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form, 'messages': messages})
 
 @never_cache
@@ -48,7 +48,7 @@ def topic_detail(request, pk):
 def question_detail(request, pk):
     user = request.user
     # topic = get_object_or_404(Topic, pk=pk)
-    question = get_object_or_404(Question, pk=pk)
+    question = get_object_or_404(Chat, pk=pk)
     messages = Message.objects.filter(question=question)
     # views = Views(user=request.user, question=get_object_or_404(Question, pk=pk))
     # views.save()

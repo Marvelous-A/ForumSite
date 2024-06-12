@@ -49,7 +49,7 @@ class Topic(models.Model):
     def __str__(self):
         return f'{self.title}'
     
-class Question(models.Model):
+class Chat(models.Model):
     text_question = models.CharField(max_length=70)
     topic = models.ManyToManyField(Topic)
 
@@ -64,7 +64,7 @@ class Message(models.Model):
     text = models.CharField(max_length=500)
     time = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='messages/', blank=True)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=True)
+    question = models.ForeignKey(Chat, on_delete=models.CASCADE, blank=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -74,7 +74,7 @@ class Message(models.Model):
 
 class Views(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Chat, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

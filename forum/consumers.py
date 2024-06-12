@@ -1,11 +1,41 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from channels.db import database_sync_to_async
-from .models import Message, User, Question
+from .models import Message, User, Chat
 from django.core.files.base import ContentFile
 import base64
 
-class QuestionConsumer(AsyncWebsocketConsumer):
+class TopicDetailConsamer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.topic_id = self.scope['url_route']['kwargs']['pk']
+        print(self.topic_id)
+        self.room_group_name = f'question_{self.topic_id}'
+        print(self.room_group_name)
+
+        await self.channel_layer.group_add(
+            self.room_group_name, 
+            self.channel_name
+            )
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.room_group_name, 
+            self.channel_name
+            )
+    async def receive(self, question_id):
+        if question_id:
+            await self.delete_question(question_id)
+
+    @database_sync_to_async
+    def delete_message(self, id):
+        try: 
+            chat = Chat.objects.get(pk=id)
+            chat.delete()
+        except Chat.DoesNotExist:
+            print("Чат удалён")
+
+class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.question_id = self.scope['url_route']['kwargs']['pk']
         self.room_group_name = f'question_{self.question_id}'
@@ -81,7 +111,7 @@ class QuestionConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def create_message(self, text, image_data=None):
         user = User.objects.get(username=self.scope["user"].username)
-        question = Question.objects.get(pk=self.question_id)
+        question = Chat.objects.get(pk=self.question_id)
         message = Message(
             author=user,
             question=question,

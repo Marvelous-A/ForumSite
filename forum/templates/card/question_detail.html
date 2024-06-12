@@ -14,7 +14,7 @@
                             <img style="" class='image_message_user' src={{message.image.url}} alt='foto_author'\>
                             <h3>{{message.text}}</h3>
                             <p>{{message.time|date:"H:i"}}</p>
-                            <button onclick="sendDelete({{message.pk}})">Удалить</button>
+                            <button class='delete_button' onclick="sendDelete({{message.pk}})"></button>
 
                         </div>
                     </p>
@@ -23,7 +23,7 @@
                         <div class='text_message_user' id="message-{{message.pk}}">
                             <h3>{{message.text}}</h3>
                             <p>{{message.time|date:"H:i"}}</p>
-                            <button onclick="sendDelete({{message.pk}})">Удалить</button>
+                            <button class='delete_button' onclick="sendDelete({{message.pk}})"></button>
                         </div>
                     </p>
                 {% endif %}
@@ -48,9 +48,11 @@
         {% endfor %}
     </div>
     <div id='text_bar'>
-       <input id="message_input" type="text" placeholder="Введите сообщение">
-       <input type="file" id="image_input" accept="image/*">
-       <button id='text_button' onclick="sendMessage()">Отправить</button>
+        <div id='text_bar_form'>
+            <input id="message_input" type="text" placeholder="Cообщение">
+            <input type="file" id="image_input" accept="image/*">
+            <button id='text_button' onclick="sendMessage()"></button>
+        </div>
     </div>
 
 
@@ -73,12 +75,28 @@
                 // Добавление нового сообщения
                 var messageDiv = document.createElement('div');
                 messageDiv.id = "message-" + data.id;
-                messageDiv.className = data.author === "{{ user.username }}" ? 'text_message_user' : 'text_message_interlocutor';
-                var messageContent = `<p><strong>${data.author}</strong> ${data.time}</p><h3>${data.message}</h3>`;
+                /*messageDiv.className = data.author === "{{ user.username }}" ? 'text_message_user' : 'text_message_interlocutor';*/
+                if (data.author === "{{ user.username }}") {
+                    /*console.log("user")*/
+                    messageDiv.className = 'text_message_user';
+                    var messageContent = `<h3>${data.message}</h3><p>${data.time}</p>`;
+                    if (data.image_url) {
+                        messageContent += `<img src="${data.image_url}" alt="Image" style="max-width: 200px;">`;
+                    }
+                    messageContent += `<button onclick="sendDelete(${data.id})">Удалить</button>`;
+                }else{
+                    /*console.log("qweqweqweq")*/
+                    messageDiv.className = 'text_message_interlocutor';
+                    var messageContent = `<p><strong>${data.author}</strong></p><h3>${data.message}</h3> ${data.time}`;
+                    if (data.image_url) {
+                        messageContent += `<img src="${data.image_url}" alt="Image" style="max-width: 200px;">`;
+                    }
+                }
+                /*var messageContent = `<p><strong>${data.author}</strong> ${data.time}</p><h3>${data.message}</h3>`;
                 if (data.image_url) {
                     messageContent += `<img src="${data.image_url}" alt="Image" style="max-width: 200px;">`;
                 }
-                messageContent += `<button onclick="sendDelete(${data.id})">Удалить</button>`;
+                messageContent += `<button onclick="sendDelete(${data.id})">Удалить</button>`;*/
                 messageDiv.innerHTML = messageContent;
                 messagesContainer.appendChild(messageDiv);
             }

@@ -3,7 +3,28 @@
 {% block content %}
     <div class='conteiner'>
         {% for question in questions %}
-            <a class='questions' href="{% url 'question_detail' pk=question.pk %}">||{{question.text_question}}||</a>
+            <div class='question' id="question-{{question.pk}}">
+                <a class='question_a' href="{% url 'question_detail' pk=question.pk %}">||{{question.text_question}}||</a>
+                <button onclick="sendDelete_question({{question.pk}})">Удалить</button>
+            </div>
         {% endfor %}
     </div>
+
+    <script>
+        var topicId = {{ topic.id }};
+        var websocket = new WebSocket(`ws://${window.location.host}/ws/topic_detail_questions/${questionId}/`);
+        websocket.ondeletequestion = function(event) {
+            var data = JSON.parse(event.data);
+    
+            if (data.id && !data.message) {
+                var questionElement = document.getElementById("question-" + data.id);
+                if (questionElement) {
+                    questionElement.remove();
+                }
+            }
+        }
+        function sendDelete_question(id) {
+            websocket.send(JSON.stringify({'id': id}));
+        }
+    </script>
 {% endblock %}
