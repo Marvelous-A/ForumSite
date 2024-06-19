@@ -9,7 +9,7 @@ class TopicDetailConsamer(AsyncWebsocketConsumer):
     async def connect(self):
         self.topic_id = self.scope['url_route']['kwargs']['pk']
         print(self.topic_id)
-        self.room_group_name = f'question_{self.topic_id}'
+        self.room_group_name = f'topic_{self.topic_id}'
         print(self.room_group_name)
 
         await self.channel_layer.group_add(
@@ -23,9 +23,32 @@ class TopicDetailConsamer(AsyncWebsocketConsumer):
             self.room_group_name, 
             self.channel_name
             )
-    async def receive(self, question_id):
-        if question_id:
-            await self.delete_question(question_id)
+        
+    async def receive(self, data):
+        data_json = json.loads(data)
+        
+        if data_json.get('action') == 'delete' in data_json:
+            topic_id = data_json['id']
+            # Удаление обсуждения из базы данных
+            await self.delete_question(topic_id)
+            # Отправка сообщения об удалении всем клиентам
+            await self.channel_layer.group_send(
+                self.room_group_name, 
+                {
+                    'type': 'delete_message',
+                    'id': topic_id,
+                    'action': 'delete'
+                }
+            )
+
+    async def delete_message(self, event):
+        topic_id = event['id']
+
+        # Отправка данных об удалении клиентам
+        await self.send(text_data=json.dumps({
+            'action': 'delete',
+            'id': topic_id,
+        }))
 
     @database_sync_to_async
     def delete_message(self, id):
