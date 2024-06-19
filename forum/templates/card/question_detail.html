@@ -30,7 +30,7 @@
             {% else %}
                 {% if message.image %}
                     <p>
-                        <div class='text_message_interlocutor'>
+                        <div class='text_message_interlocutor' id="message-{{message.pk}}">
                             <img class='image_message_interlocutor' src={{message.image.url}} alt='foto_users'\>
                             <p>{{message.author}}</p>
                             <h3>{{message.text}}</h3><p>{{message.time|date:"H:i"}}</p>
@@ -38,7 +38,7 @@
                     </p>
                 {% else %}
                     <p>
-                        <div class='text_message_interlocutor'>
+                        <div class='text_message_interlocutor' id="message-{{message.pk}}">
                             <p>{{message.author}}</p>
                             <h3>{{message.text}}</h3><p>{{message.time|date:"H:i"}}</p>
                         </div>

@@ -35,13 +35,13 @@ class TopicDetailConsamer(AsyncWebsocketConsumer):
             await self.channel_layer.group_send(
                 self.room_group_name, 
                 {
-                    'type': 'delete_message',
+                    'type': 'delete_question_message',
                     'id': topic_id,
                     'action': 'delete'
                 }
             )
 
-    async def delete_message(self, event):
+    async def delete_question_message(self, event):
         topic_id = event['id']
 
         # Отправка данных об удалении клиентам
@@ -51,7 +51,7 @@ class TopicDetailConsamer(AsyncWebsocketConsumer):
         }))
 
     @database_sync_to_async
-    def delete_message(self, id):
+    def delete_question(self, id):
         try: 
             chat = Chat.objects.get(pk=id)
             chat.delete()
