@@ -5,18 +5,19 @@
         {% for question in questions %}
             <div class='question' id="question-{{question.pk}}">
                 <a class='question_a' href="{% url 'question_detail' pk=question.pk %}">||{{question.text_question}}||</a>
-                <button onclick="sendDelete_question({{question.pk}})">Удалить</button>
+                <button onclick="deleteQuestion({{question.pk}})" action='delete'>Удалить</button>
             </div>
         {% endfor %}
     </div>
 
     <script>
         var topicId = {{ topic.id }};
-        var websocket = new WebSocket(`ws://${window.location.host}/ws/topic_detail_questions/${questionId}/`);
-        websocket.ondeletequestion = function(event) {
+        var websocket = new WebSocket(`ws://${window.location.host}/ws/topic_detail_questions/${topicId}/`);
+        websocket.onmessage = function(event) {
             var data = JSON.parse(event.data);
     
             if (data.id && data.action === 'delete') {
+                console.log('func_del_in')
                 var questionElement = document.getElementById("question-" + data.id);
                 if (questionElement) {
                     questionElement.parentNode.removeChild(questionElement);
@@ -24,7 +25,7 @@
             }
         }
 
-        function sendDelete_question(id) {
+        function deleteQuestion(id) {
             websocket.send(JSON.stringify({'id': id, 'action': 'delete'}));
         }
     </script>

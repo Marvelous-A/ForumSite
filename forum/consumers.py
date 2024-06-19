@@ -24,10 +24,12 @@ class TopicDetailConsamer(AsyncWebsocketConsumer):
             self.channel_name
             )
         
-    async def receive(self, data):
-        data_json = json.loads(data)
+    async def receive(self, text_data):
+        print('вход')
+        data_json = json.loads(text_data)
+        print(data_json)
         
-        if data_json.get('action') == 'delete' in data_json:
+        if data_json.get('action') == 'delete':
             topic_id = data_json['id']
             # Удаление обсуждения из базы данных
             await self.delete_question(topic_id)
@@ -40,6 +42,7 @@ class TopicDetailConsamer(AsyncWebsocketConsumer):
                     'action': 'delete'
                 }
             )
+
 
     async def delete_question_message(self, event):
         topic_id = event['id']
