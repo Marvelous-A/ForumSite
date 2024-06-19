@@ -231,7 +231,7 @@ body {
     border: none;
     border-radius: 48%;
     background-color: #31d810;
-    background-image: url('forum\static\image_for_site\send_icon_183897.png');
+    background-image: url('/media/for_site/send_icon_183897.png');
     cursor: pointer;
 }
 #text_button_image {

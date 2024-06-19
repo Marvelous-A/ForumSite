@@ -105,7 +105,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'type': 'send_message',
                     'message': message_text,
                     'id': message.id,
-                    'author': message.author.username
+                    'author': message.author.username,
                     }
                 )
     
