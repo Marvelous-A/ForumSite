@@ -98,7 +98,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             message_text = text_data_json['text']
             image_data = text_data_json.get('image')
             message = await self.create_message(message_text, image_data)
-            print(message.time, "qwwqwqwqwqw")
     
             await self.channel_layer.group_send(
                 self.room_group_name,
