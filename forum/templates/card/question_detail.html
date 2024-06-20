@@ -63,6 +63,7 @@
     
         websocket.onmessage = function(event) {
             var data = JSON.parse(event.data);
+            console.log(data.time);
             var messagesContainer = document.getElementById("window");
     
             if (data.id && !data.message) {
@@ -83,7 +84,7 @@
                     if (data.image_url) {
                         messageContent += `<img src="${data.image_url}" alt="Image" style="max-width: 200px;">`;
                     }
-                    messageContent += `<button onclick="sendDelete(${data.id})">Удалить</button>`;
+                    messageContent += `<button class='delete_button' onclick="sendDelete(${data.id})"></button>`;
                 }else{
                     /*console.log("qweqweqweq")*/
                     messageDiv.className = 'text_message_interlocutor';

@@ -98,6 +98,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             message_text = text_data_json['text']
             image_data = text_data_json.get('image')
             message = await self.create_message(message_text, image_data)
+            print(message.time, "qwwqwqwqwqw")
     
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -105,7 +106,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'type': 'send_message',
                     'message': message_text,
                     'id': message.id,
-                    'author': message.author.username
+                    'author': message.author.username,
+                    'time': message.time.strftime("%H:%M")
                     }
                 )
     
@@ -113,7 +115,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             "id": event['id'],
             "message": event['message'],
-            "author": event['author']
+            "author": event['author'],
+            "time": event['time']
             })
         )
 
