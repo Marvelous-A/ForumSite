@@ -15,6 +15,7 @@ channels-redis = "^4.2.0"
 gunicorn = "^22.0.0"
 uvicorn = "^0.30.0"
 daphne = "^4.1.2"
+pytz = "^2024.1"
 
 
 [build-system]

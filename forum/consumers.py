@@ -4,6 +4,7 @@ from channels.db import database_sync_to_async
 from .models import Message, User, Chat
 from django.core.files.base import ContentFile
 import base64
+import pytz
 
 class TopicDetailConsamer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -98,7 +99,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
             message_text = text_data_json['text']
             image_data = text_data_json.get('image')
             message = await self.create_message(message_text, image_data)
-    
+
+            local_tz = pytz.timezone('Europe/Moscow')
+            local_time = message.time.astimezone(local_tz)
+            format_time = local_time.strftime("%H:%M")
+
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
@@ -106,7 +111,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'message': message_text,
                     'id': message.id,
                     'author': message.author.username,
-                    'time': message.time.strftime("%H:%M")
+                    'time': format_time #message.time.strftime("%H:%M")
                     }
                 )
     
