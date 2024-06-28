@@ -4,7 +4,7 @@ from channels.db import database_sync_to_async
 from .models import Message, User, Chat
 from django.core.files.base import ContentFile
 import base64
-import pytz
+from django.utils import timezone
 
 class TopicDetailConsamer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -55,10 +55,11 @@ class TopicDetailConsamer(AsyncWebsocketConsumer):
         }))
 
     @database_sync_to_async
-    def delete_question(self, id):
+    def delete_question(self, id, user):
         try: 
             chat = Chat.objects.get(pk=id)
-            chat.delete()
+            if user == chat.author.username:
+                chat.delete()
         except Chat.DoesNotExist:
             print("Чат удалён")
 
@@ -99,10 +100,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             message_text = text_data_json['text']
             image_data = text_data_json.get('image')
             message = await self.create_message(message_text, image_data)
-
-            local_tz = pytz.timezone('Europe/Moscow')
-            local_time = message.time.astimezone(local_tz)
-            format_time = local_time.strftime("%H:%M")
+            local_datetime = timezone.localtime(message.time)
 
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -111,7 +109,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'message': message_text,
                     'id': message.id,
                     'author': message.author.username,
-                    'time': format_time #message.time.strftime("%H:%M")
+                    'time': local_datetime.strftime("%H:%M")
                     }
                 )
     

@@ -50,6 +50,7 @@ class Topic(models.Model):
         return f'{self.title}'
     
 class Chat(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     text_question = models.CharField(max_length=70)
     topic = models.ManyToManyField(Topic)
 

@@ -5,7 +5,9 @@
         {% for question in questions %}
             <div class='question' id="question-{{question.pk}}">
                 <a class='question_a' href="{% url 'question_detail' pk=question.pk %}">||{{question.text_question}}||</a>
-                <button onclick="deleteQuestion({{question.pk}})" action='delete'>Удалить</button>
+                {% if question.author == user %}
+                    <button onclick="deleteQuestion({{question.pk}}{{user}})" action='delete'>Удалить</button>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
@@ -25,8 +27,8 @@
             }
         }
 
-        function deleteQuestion(id) {
-            websocket.send(JSON.stringify({'id': id, 'action': 'delete'}));
+        function deleteQuestion(id, user_name) {
+            websocket.send(JSON.stringify({'id': id, 'action': 'delete', 'user': user_name}));
         }
     </script>
 {% endblock %}

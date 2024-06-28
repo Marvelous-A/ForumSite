@@ -58,6 +58,14 @@
 
     
     <script>
+        let inp = document.getElementById("message_input");
+        addEventListener('keydown', Enter => changeState(Enter));
+        function changeState(Enter){
+            if (inp.focus){
+                console.log(Enter);
+            }
+        }
+
         var questionId = {{ question.id }};
         var websocket = new WebSocket(`ws://${window.location.host}/ws/question/${questionId}/`);
     
@@ -72,7 +80,7 @@
                 if (messageElement) {
                     messageElement.remove();
                 }
-            } else if (data.message) {
+            } else if (data.message){
                 // Добавление нового сообщения
                 var messageDiv = document.createElement('div');
                 messageDiv.id = "message-" + data.id;
