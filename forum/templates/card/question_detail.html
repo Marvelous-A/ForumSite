@@ -58,13 +58,13 @@
 
     
     <script>
+
         let inp = document.getElementById("message_input");
-        addEventListener('keydown', Enter => changeState(Enter));
-        function changeState(Enter){
-            if (inp.focus){
-                console.log(Enter);
+        inp.addEventListener('keydown', function(event){
+            if (event.keyCode === 13){
+                document.getElementById("text_button").click()
             }
-        }
+        });
 
         var questionId = {{ question.id }};
         var websocket = new WebSocket(`ws://${window.location.host}/ws/question/${questionId}/`);

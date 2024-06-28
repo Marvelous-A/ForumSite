@@ -98,6 +98,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
         if 'text' in text_data_json:
             message_text = text_data_json['text']
+            if message_text == '':
+                return
             image_data = text_data_json.get('image')
             message = await self.create_message(message_text, image_data)
             local_datetime = timezone.localtime(message.time)
