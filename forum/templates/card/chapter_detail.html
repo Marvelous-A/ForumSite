@@ -1,6 +1,11 @@
 {% extends "card/base.html" %}
 
 {% block content %}
+    <div class='navigation'>
+        <h5><a href="{% url 'main'%}">Главная</a></h5>
+        <h5>>></h5>
+        <h4>{{chapter.title}}</h4>
+    </div>
     <div class='conteiner'>
         {% for topic in topics %}
             <a class='topic_card' href="{% url 'topic_detail' pk=topic.pk %}">

@@ -34,13 +34,25 @@ def main(request):
 def chapter_detail(request, pk):
     chapter = get_object_or_404(Chapter, pk=pk)
     topics = Topic.objects.filter(chapter=chapter)
-    return render(request, 'card/chapter_detail.html', {'topics': topics})
+    return render(request, 'card/chapter_detail.html', {'chapter': chapter, 'topics': topics})
 
 @login_required(login_url='login')
 def topic_detail(request, pk):
+    users = Profile.objects.all()
+    users_admin = []
+    for user in users:
+        if user.admin == True:
+            users_admin.append(f"{user.user}")
+    print(users_admin)
     topic = get_object_or_404(Topic, pk=pk)
+    chapter = topic.chapter
+    print(chapter)
     questions = Chat.objects.filter(topic=topic)
-    return render(request, 'card/topic_detail.html', {'questions': questions, 'topic': topic})
+    questions_names = []
+    for i in questions:
+        questions_names.append(i.text_question)
+    print(questions_names)
+    return render(request, 'card/topic_detail.html', {'questions_names': questions_names, 'questions': questions, 'topic': topic, 'users_admin': users_admin})
     # return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form, 'messages': messages})
 
 @never_cache

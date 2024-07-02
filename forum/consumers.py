@@ -6,6 +6,44 @@ from django.core.files.base import ContentFile
 import base64
 from django.utils import timezone
 
+class SearchChatConsamer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.topic_id = self.scope['url_route']['kwargs']['pk']
+        print(self.topic_id)
+        self.room_group_name = f'topic_{self.topic_id}'
+        print(self.room_group_name)
+
+        await self.channel_layer.group_add(
+            self.room_group_name, 
+            self.channel_name
+            )
+        await self.accept()
+    
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(
+            self.room_group_name, 
+            self.channel_name
+            )
+    
+    async def receive(self, text_data):
+        print('вход')
+        data_json = json.loads(text_data)
+        print(data_json)
+        
+        if data_json.get('action') == 'delete':
+            topic_id = data_json['id']
+            # Удаление обсуждения из базы данных
+            await self.delete_question(topic_id)
+            # Отправка сообщения об удалении всем клиентам
+            await self.channel_layer.group_send(
+                self.room_group_name, 
+                {
+                    'type': 'delete_question_message',
+                    'id': topic_id,
+                    'action': 'delete'
+                }
+            )
+
 class TopicDetailConsamer(AsyncWebsocketConsumer):
     async def connect(self):
         self.topic_id = self.scope['url_route']['kwargs']['pk']
@@ -55,10 +93,10 @@ class TopicDetailConsamer(AsyncWebsocketConsumer):
         }))
 
     @database_sync_to_async
-    def delete_question(self, id, user):
+    def delete_question(self, id, user, users_admin):
         try: 
             chat = Chat.objects.get(pk=id)
-            if user == chat.author.username:
+            if user == chat.author.username or user in users_admin:
                 chat.delete()
         except Chat.DoesNotExist:
             print("Чат удалён")

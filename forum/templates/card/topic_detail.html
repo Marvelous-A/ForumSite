@@ -1,18 +1,35 @@
 {% extends "card/base.html" %}
 
 {% block content %}
-    <div class='conteiner'>
+    <div class='navigation'>
+        <h5><a href="{% url 'main'%}">Главная</a></h5>
+        <h5>>></h5>
+        <h4>{{chapter.title}}</h4>
+        <h5>>></h5>
+        <h4>{{topic.title}}</h4>
+    </div>
+    <div id="search_bar">
+        <input id="search_input" oninput="search({{questions}})">
+    </div>
+    <div class='conteiner_chats'>
         {% for question in questions %}
             <div class='question' id="question-{{question.pk}}">
-                <a class='question_a' href="{% url 'question_detail' pk=question.pk %}">||{{question.text_question}}||</a>
+                <a class='question_a' href="{% url 'question_detail' pk=question.pk %}">{{question.text_question}}</a>
                 {% if question.author == user %}
-                    <button onclick="deleteQuestion({{question.pk}}{{user}})" action='delete'>Удалить</button>
+                    <button onclick="deleteQuestion({{question.pk}}{{user}}{{users_admin}})" action='delete'>Удалить</button>
+                {% elif user.username in users_admin %}
+                    <button onclick="deleteQuestion({{question.pk}}{{user}}{{users_admin}})" action='delete'>Удалить</button>
                 {% endif %}
             </div>
         {% endfor %}
     </div>
 
     <script>
+        {% comment %} var websocket_search = new WebSocket(`ws://${window.location.host}/ws/search/${topicId}/`); {% endcomment %}
+        function search(questions){
+            console.log(document.getElementById('search_input').value, questions);
+        }
+
         var topicId = {{ topic.id }};
         var websocket = new WebSocket(`ws://${window.location.host}/ws/topic_detail_questions/${topicId}/`);
         websocket.onmessage = function(event) {
@@ -27,8 +44,8 @@
             }
         }
 
-        function deleteQuestion(id, user_name) {
-            websocket.send(JSON.stringify({'id': id, 'action': 'delete', 'user': user_name}));
+        function deleteQuestion(id, user_name, users_admin) {
+            websocket.send(JSON.stringify({'id': id, 'action': 'delete', 'user': user_name, 'users_admin': users_admin}));
         }
     </script>
 {% endblock %}
