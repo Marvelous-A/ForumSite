@@ -8,9 +8,9 @@
         <h5>>></h5>
         <h4>{{topic.title}}</h4>
     </div>
-    <div id="search_bar">
-        <input id="search_input" oninput="search({{questions}})">
-    </div>
+    <form method='get' id='search_bar' > 
+        <input type='text' name="search_query" id="search_input" value="{{ search_query }}">
+    </form>
     <div class='conteiner_chats'>
         {% for question in questions %}
             <div class='question' id="question-{{question.pk}}">
@@ -25,10 +25,16 @@
     </div>
 
     <script>
-        {% comment %} var websocket_search = new WebSocket(`ws://${window.location.host}/ws/search/${topicId}/`); {% endcomment %}
-        function search(questions){
-            console.log(document.getElementById('search_input').value, questions);
-        }
+        document.getElementById('search_input').addEventListener('input', function() {
+            document.getElementById("search_bar").submit();
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            var SearchInput = document.getElementById('search_input');
+            var tempValue = SearchInput.value;
+            SearchInput.value = '';
+            document.getElementById('search_input').focus(); // Установить фокус на поле ввода поиска
+            SearchInput.value = tempValue;
+        });
 
         var topicId = {{ topic.id }};
         var websocket = new WebSocket(`ws://${window.location.host}/ws/topic_detail_questions/${topicId}/`);

@@ -43,15 +43,19 @@ def topic_detail(request, pk):
     for user in users:
         if user.admin == True:
             users_admin.append(f"{user.user}")
-    print(users_admin)
     topic = get_object_or_404(Topic, pk=pk)
-    chapter = topic.chapter.all()[0]
     questions = Chat.objects.filter(topic=topic)
+
+    search_query = request.GET.get('search_query', request.session.get('search_query', ''))
+
+    if search_query:
+        questions = questions.filter(text_question__icontains=search_query)
+
+    chapter = topic.chapter.all()[0]
     questions_names = []
-    for i in questions:
-        questions_names.append(i.text_question)
-    print(questions_names)
-    return render(request, 'card/topic_detail.html', {'chapter': chapter, 'questions_names': questions_names, 'questions': questions, 'topic': topic, 'users_admin': users_admin})
+    for question in questions:
+        questions_names.append(question.text_question)
+    return render(request, 'card/topic_detail.html', {'search_query': search_query, 'chapter': chapter, 'questions_names': questions_names, 'questions': questions, 'topic': topic, 'users_admin': users_admin})
     # return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form, 'messages': messages})
 
 @never_cache
