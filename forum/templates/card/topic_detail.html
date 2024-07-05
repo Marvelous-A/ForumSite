@@ -4,7 +4,7 @@
     <div class='navigation'>
         <h5><a href="{% url 'main'%}">Главная</a></h5>
         <h5>>></h5>
-        <h4>{{chapter.title}}</h4>
+        <h5><a href="{% url 'chapter_detail' pk=chapter.pk %}">{{chapter.title}}</a></h5>
         <h5>>></h5>
         <h4>{{topic.title}}</h4>
     </div>

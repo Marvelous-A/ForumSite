@@ -45,14 +45,13 @@ def topic_detail(request, pk):
             users_admin.append(f"{user.user}")
     print(users_admin)
     topic = get_object_or_404(Topic, pk=pk)
-    chapter = topic.chapter
-    print(chapter)
+    chapter = topic.chapter.all()[0]
     questions = Chat.objects.filter(topic=topic)
     questions_names = []
     for i in questions:
         questions_names.append(i.text_question)
     print(questions_names)
-    return render(request, 'card/topic_detail.html', {'questions_names': questions_names, 'questions': questions, 'topic': topic, 'users_admin': users_admin})
+    return render(request, 'card/topic_detail.html', {'chapter': chapter, 'questions_names': questions_names, 'questions': questions, 'topic': topic, 'users_admin': users_admin})
     # return render(request, 'card/topic_detail.html', {'topic':topic, 'form': message_form, 'messages': messages})
 
 @never_cache
@@ -77,7 +76,10 @@ def question_detail(request, pk):
     else: 
         message_form = MessageForm()
     # return render(request, 'card/question_detail.html', {})
-    return render(request, 'card/question_detail.html', {'question':question, 'form': message_form, 'messages': messages})
+    topic = question.topic.all()[0]
+    chapter = topic.chapter.all()[0]
+    print(chapter)
+    return render(request, 'card/question_detail.html', {'chapter': chapter, 'topic': topic, 'question':question, 'form': message_form, 'messages': messages})
 
 # def delete_message(request, pk_mess, pk_ques):
     # message = get_object_or_404(Message, pk=pk_mess)
