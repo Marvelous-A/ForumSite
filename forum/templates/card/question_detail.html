@@ -2,11 +2,11 @@
 
 {% block content %}
     <div class='navigation'>
-        <h5><a href="{% url 'main'%}">Главная</a></h5>
+        <h5><a href="{% url 'forum:main'%}">Главная</a></h5>
         <h5>>></h5>
-        <h5><a href="{% url 'chapter_detail' pk=chapter.pk %}">{{chapter.title}}</a></h5>
+        <h5><a href="{% url 'forum:chapter_detail' pk=chapter.pk %}">{{chapter.title}}</a></h5>
         <h5>>></h5>
-        <h5><a href="{% url 'topic_detail' pk=topic.pk %}">{{topic.title}}</a></h5>
+        <h5><a href="{% url 'forum:topic_detail' pk=topic.pk %}">{{topic.title}}</a></h5>
         <h5>>></h5>
         <h4>{{question.text_question}}</h4>
     </div>

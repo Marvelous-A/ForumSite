@@ -4,7 +4,7 @@
     <div class='conteiner'>
         {%for chapter in chapters%}
             <div class='chapter'>
-                <a href="{% url 'chapter_detail' pk=chapter.pk %}">{{chapter.title}}</a>
+                <a href="{% url 'forum:chapter_detail' pk=chapter.pk %}">{{chapter.title}}</a>
                 <img class='chapter_icon' src={{ chapter.icon_img.url }} alt='icon'\>
             </div>
         {% endfor %}

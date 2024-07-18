@@ -27,6 +27,7 @@ SECRET_KEY = 'django-insecure-su_^=@o^h98d-bx4l#3(*(zv7x0naeb8(a+=y#!61!=n22=b0d
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.pythonanywhere.com']
+LOGOUT_REDIRECT_URL = '/'
 
 # For django-debug-toolbar
 INTERNAL_IPS = [

@@ -2,13 +2,13 @@
 
 {% block content %}
     <div class='navigation'>
-        <h5><a href="{% url 'main'%}">Главная</a></h5>
+        <h5><a href="{% url 'forum:main'%}">Главная</a></h5>
         <h5>>></h5>
         <h4>{{chapter.title}}</h4>
     </div>
     <div class='conteiner'>
         {% for topic in topics %}
-            <a class='topic_card' href="{% url 'topic_detail' pk=topic.pk %}">
+            <a class='topic_card' href="{% url 'forum:topic_detail' pk=topic.pk %}">
                 <div>
                     <img class='image_topic_view' src={{ topic.image }} alt='фото'\>
                     <p>{{topic.title}}</p>

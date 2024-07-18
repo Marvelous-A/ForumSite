@@ -5,33 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' href={% static "css/base.css" %}>
 
-    <title>Forum</title>
+    {% comment %} <title>Forum</title> {% endcomment %}
 </head>
 <body>
     <header id='header'>
-        <a id='main' href="{% url 'main' %}" ><h1>forum</h1></a>
+        <a id='main' href="{% url 'forum:main' %}" ><h1>forum</h1></a>
     </header>
-    {% comment %} <div id='a_div'>
-        <a class='a_base' id='admin' href="/admin">Admin</a>
-        <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a>
-        <a class='a_base' id='login' href="{% url 'login' %}" >Вход</a>
-        <a class='a_base' id='logout' href="{% url 'logout' %}" >Выход</a>
-        <a class='a_base' id='registration' href="{% url 'registration' %}" >Регистрация</a>
-    </div> {% endcomment %}
     {% if user.is_authenticated %}
         <div id='a_div'>
             {% if user.is_superuser %}
                 <a class='a_base' id='admin' href="/admin">Admin</a>
             {% endif %}
             {% comment %} <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a> {% endcomment %}
-            <a class='a_base' href="{% url 'profile' %}" >Профиль</a>
-            <a class='a_base' id='logout' href="{% url 'logout' %}">Выход</a>
+            {% comment %} + <a class='a_base' href="{% url 'profile' %}" >Профиль</a> {% endcomment %}
+            <a class='a_base' id='logout' href="{% url 'forum:logout_view' %}">Выход</a>
         </div>
     {% else %}
         <div id='a_div'>
-            {% comment %} <a class='a_base' id='main' href="{% url 'main' %}" >Главная</a> {% endcomment %}
-            <a class='a_base' id='login' href="{% url 'login' %}">Вход</a>
-            <a class='a_base' href="{% url 'registration'%}">Регистрация</a>
+            <a class='a_base' id='main' href="{% url 'forum:main' %}" >Главная</a>
+            {% comment %} <a class='a_base' id='login' href="{% url 'forum:login' %}">Вход</a> {% endcomment %}
+            {% comment %} + <a class='a_base' href="{% url 'registration'%}">Регистрация</a> {% endcomment %}
         </div>
     {% endif %}
     {% block content %}

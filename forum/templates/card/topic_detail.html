@@ -2,9 +2,9 @@
 
 {% block content %}
     <div class='navigation'>
-        <h5><a href="{% url 'main'%}">Главная</a></h5>
+        <h5><a href="{% url 'forum:main'%}">Главная</a></h5>
         <h5>>></h5>
-        <h5><a href="{% url 'chapter_detail' pk=chapter.pk %}">{{chapter.title}}</a></h5>
+        <h5><a href="{% url 'forum:chapter_detail' pk=chapter.pk %}">{{chapter.title}}</a></h5>
         <h5>>></h5>
         <h4>{{topic.title}}</h4>
     </div>
@@ -14,7 +14,7 @@
     <div class='conteiner_chats'>
         {% for question in questions %}
             <div class='question' id="question-{{question.pk}}">
-                <a class='question_a' href="{% url 'question_detail' pk=question.pk %}">{{question.text_question}}</a>
+                <a class='question_a' href="{% url 'forum:question_detail' pk=question.pk %}">{{question.text_question}}</a>
                 {% if question.author == user %}
                     <button onclick="deleteQuestion({{question.pk}}{{user}}{{users_admin}})" action='delete'>Удалить</button>
                 {% elif user.username in users_admin %}
